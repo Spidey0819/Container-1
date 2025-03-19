@@ -64,7 +64,7 @@ def store_file():
 @app.route('/calculate', methods=['POST'])
 def calculate():
     try:
-        input_data = request.get_json()
+        input_data = request.get_json(silent=True)
 
         if input_data is None:
             logger.error("Null JSON input received")
