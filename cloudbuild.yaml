@@ -25,7 +25,7 @@ steps:
       - |
         PROJECT=$$(gcloud config get-value core/project)
         export USE_GKE_GCLOUD_AUTH_PLUGIN=true
-        gcloud container clusters get-credentials gke-cluster --zone us-central1-c --project gcp-kubernetes-assignment
+        gcloud container clusters get-credentials gke-kubernetes --zone us-central1-c --project gcp-kubernetes-assignment
         kubectl apply -f container1-deployment.yaml
 
   # Step 4: Apply persistent volume and claim
@@ -36,9 +36,9 @@ steps:
       - |
         PROJECT=$$(gcloud config get-value core/project)
         export USE_GKE_GCLOUD_AUTH_PLUGIN=true
-        gcloud container clusters get-credentials gke-cluster --zone us-central1-c --project gcp-kubernetes-assignment
+        gcloud container clusters get-credentials gke-kubernetes --zone us-central1-c --project gcp-kubernetes-assignment
         kubectl apply -f pv-pvc.yaml
 
 images:
-  - 'us-central1-docker.pkg.dev/cloud-computing-441019/kube-artifact-registry/container1:latest'
+  - 'us-central1-docker.pkg.dev/gcp-kubernetes-assignment/kubernetes-assignment/container1:latest'
 
