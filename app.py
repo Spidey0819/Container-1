@@ -26,10 +26,8 @@ def store_file():
     file_path = os.path.join(PERSISTENT_STORAGE_PATH, file_name)
 
     try:
-        # Ensure the directory exists
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
-        # Write the file data to the persistent storage
         with open(file_path, 'w') as f:
             f.write(file_data)
 
@@ -48,10 +46,8 @@ def store_file():
 @app.route('/calculate', methods=['POST'])
 def calculate():
     try:
-        # Get JSON data with silent=True to avoid raising an exception for invalid JSON
         input_data = request.get_json(silent=True)
 
-        # Check if data is None or missing required fields
         if input_data is None or 'file' not in input_data or 'product' not in input_data:
             return jsonify({
                 "file": None,
@@ -61,7 +57,6 @@ def calculate():
         file_name = input_data.get('file')
         product_details = input_data.get('product')
 
-        # Additional validation
         if not file_name:
             return jsonify({
                 "file": None,
@@ -76,7 +71,6 @@ def calculate():
                 "error": "File not found."
             })
 
-        # Send a request to Container 2 to calculate the sum
         api_response = requests.post(
             'http://container2-service:90/sum',
             json={"file": file_name, "product": product_details},
@@ -85,13 +79,13 @@ def calculate():
         return jsonify(api_response.json())
     except Exception as e:
         logger.error(f"Error in calculate: {str(e)}")
-        # If we have a file_name, use it in the error response
+
         if 'file_name' in locals() and file_name:
             return jsonify({
                 "file": file_name,
                 "error": "Error processing request."
             })
-        # Otherwise return a null file response
+
         return jsonify({
             "file": None,
             "error": "Invalid JSON input."
@@ -99,5 +93,3 @@ def calculate():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=6000, debug=False)
-
-#Trigger
